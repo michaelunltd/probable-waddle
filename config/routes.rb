@@ -4,8 +4,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
-      resources :messages
-      resources :channels
+      resources :messages do
+        post :create_channel_message
+      end
+      resources :channels do
+        post :create_message
+      end
     end
   end
 end

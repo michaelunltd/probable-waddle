@@ -5,14 +5,15 @@ import Item from "./Item";
 
 export default class List extends Component {
   renderUsers() {
-    const { items } = this.props
-
+    const { items, handleItemClick } = this.props
     return items.map( (item) => {
       console.log(item.users)
       return (
         <Item
           key={ item.id }
-          name={ item.username || item.name }/>
+          name={ item.username || item.name }
+          itemId={ item.id }
+          handleOnClick={ (itemId) => handleItemClick(itemId)}/>
       )
     })
   }
@@ -23,7 +24,7 @@ export default class List extends Component {
     return (
       <div>
         { type }
-        { onClickCreateChannel === undefined ? "" :  
+        { onClickCreateChannel === undefined ? "" :
           <button onClick={ () => { onClickCreateChannel() } } >
             Create
           </button>

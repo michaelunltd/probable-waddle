@@ -3,9 +3,10 @@ import PropTypes from "prop-types"
 
 export default class Item extends Component {
   render() {
+    const { name, handleOnClick, itemId } = this.props
     return (
-      <li>
-        { this.props.name }
+      <li onClick={ () => handleOnClick(itemId) }>
+        { name }
       </li>
     )
   }
