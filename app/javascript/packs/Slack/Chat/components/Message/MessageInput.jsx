@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 class MessageInput extends Component {
   handleSubmit(evt) {
     evt.preventDefault()
-    alert(this.refs.message_input.value)
     const { onCreateMessage } = this.props
 
     onCreateMessage({
@@ -12,6 +11,7 @@ class MessageInput extends Component {
         content: this.refs.message_input.value
       }
     })
+    this.refs.message_input.value = ''
   }
 
 

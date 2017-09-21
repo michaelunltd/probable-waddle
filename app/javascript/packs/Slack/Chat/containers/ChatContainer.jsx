@@ -84,40 +84,50 @@ export default class ChatContainer extends Component {
     alert(`Click user: ${userId}`)
   }
 
-  renderChannelHeader() {
-    const { currentChannel } = this.state
-    const channelName = currentChannel !== null? currentChannel.name : ''
-    const channelUsers = currentChannel !== null? currentChannel.users : []
-    const usernames = channelUsers.map(user => user.username )
-    const renderUsers = () => {
+  renderMainContent() {
+    const { currentChannel, messages } = this.state
+
+    if (currentChannel !== null) {
+      const { name, users } = currentChannel
+      const usernames = users.map(user => {
+        return (
+          <li>{ user.username }</li>
+        )
+      })
+      const channelMessages = messages.map(message => {
+        return (
+          <Message content={ message.content } />
+        )
+      })
       return (
-        channelUsers.map(user => {
-          return (
-            <li>
-              { user.username }
-            </li>
-          )
-        })
+        <div>
+          <div className="channel-header name">
+            Current Channel: { name }
+          </div>
+          <div className="channel-header users">
+            Channel Users:
+            <ul>
+              { usernames }
+            </ul>
+
+            Messages:
+            <ul>
+              { channelMessages }
+            </ul>
+          </div>
+          <MessageInput onCreateMessage={ (params) => { this.createMessage(params)}}/>
+        </div>
       )
     }
-
-    return (
-      <div>
-        <div className="channel-header name">
-          { channelName }
-        </div>
-        <div className="channel-header users">
-          Users:
-          <ul>
-            { renderUsers() }
-          </ul>
-        </div>
-      </div>
-    )
+    else {
+      return (
+        <div>Select a Channel</div>
+      )
+    }
   }
 
   render() {
-    const { users, channels } = this.state
+    const { users, channels, currentChannel } = this.state
     const publicChannels = channels.filter( (member) => { return member.type === "PublicChannel" } )
     const privateChannels = channels.filter( (member) => { return member.type === "PrivateChannel" } )
     const groupChannels = channels.filter( (member) => { return member.type === "GroupChannel" } )
@@ -158,8 +168,7 @@ export default class ChatContainer extends Component {
               handleItemClick={ (userId) => { this.handleUserClick(userId) } } />
           </aside>
           <article>
-            { this.renderChannelHeader() }
-            <MessageInput onCreateMessage={ (params) => { this.createMessage(params)}}/>
+            { this.renderMainContent() }
           </article>
         </div>
       </div>
